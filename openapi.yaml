@@ -1,0 +1,627 @@
+openapi: 3.0.2
+info:
+  title: Swagger Customer Store - OpenAPI 3.0
+  description: |-
+    This is a Customer Store Server based on the OpenAPI 3.0 specification.
+
+
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: api@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: /localhost
+paths:
+  /customers/{customerId}:
+    put:
+      tags:
+        - customer
+      summary: Update an existing Customer
+      description: Update an existing customer by Id
+      operationId: updateCustomer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Update an existent Customer in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+
+    get:
+      tags:
+        - customer
+      summary: Find customer by customer id
+      description: Provide the customer id in the path variable
+      operationId: findPetsByStatus
+      parameters:
+        - name: customerId
+          in: path
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '400':
+          description: Invalid status value
+
+    delete:
+      tags:
+        - customer
+      summary: delete customer by customer id
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: customer with given id does not exist
+
+  /customers:
+    get:
+      tags:
+        - customer
+      summary: Get all customers
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+  /customer:
+    post:
+      tags:
+        - customer
+      summary: Add a new customer to the store
+      description: Add a new Customer to the store
+      operationId: addCustomer
+      requestBody:
+        description: Create a new customer in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '405':
+          description: Invalid input
+
+  /customers/mail:
+    get:
+      tags:
+        - customer
+      summary: Get all customers in the mail box
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+
+  /customers/{customerId}/addresses:
+    get:
+      tags:
+        - customer
+      summary: get addresses by customer id
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Address'
+        '400':
+          description: Invalid customer id
+  /customers/{customerId}/phoneNumbers:
+    get:
+      tags:
+        - customer
+      summary: get phones by customer id
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PhoneNumber'
+        '400':
+          description: Invalid customer id
+
+  /addresses:
+    get:
+      tags:
+        - address
+      summary: Get all addresses
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Address'
+  /addresses/{addressId}/customer:
+    get:
+      tags:
+        - address
+      summary: Find customer by address id
+      description: Provide the address id in the path variable
+      operationId: findCustomerByAddressId
+      parameters:
+        - name: addressId
+          in: path
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          description: Invalid status value
+
+  /addresses/{addressId}:
+    get:
+      tags:
+        - address
+      summary: Find address by address id
+      description: Provide the customer id in the path variable
+      operationId: findAddressByAddressId
+      parameters:
+        - name: addressId
+          in: path
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            $ref: '#/components/schemas/Address'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+        '404':
+          description: Invalid status value
+
+    put:
+      tags:
+        - address
+      summary: Update an existing address
+      description: Update an existing address by Id
+      operationId: updateAddress
+      parameters:
+        - name: addressId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Update an existent Address in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+
+    delete:
+      tags:
+        - address
+      summary: delete customer by customer id
+      parameters:
+        - name: addressId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Address'
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: address with given id does not exist
+
+  /addresses/customer/{customerId}:
+    delete:
+      tags:
+        - address
+      summary: delete address by customer id
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Address'
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: customer with given id does not exist
+
+  /address:
+    post:
+      tags:
+        - address
+      summary: Add a new address to the store
+      description: Add a new Customer to the store
+      operationId: addAddress
+      requestBody:
+        description: Create a new address in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+        '405':
+          description: Invalid input
+
+  /phoneNumbers:
+    get:
+      tags:
+        - phone-number
+      summary: Get all phones
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PhoneNumber'
+
+  /phoneNumbers/{phoneId}:
+    get:
+      tags:
+        - phone-number
+      summary: Find phone by phone id
+      description: Provide the phone id in the path variable
+      operationId: findPhoneByPhoneId
+      parameters:
+        - name: phoneId
+          in: path
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            $ref: '#/components/schemas/PhoneNumber'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumber'
+        '404':
+          description: Invalid phone id
+
+    put:
+      tags:
+        - phone-number
+      summary: Update existing phone by phone id
+      parameters:
+        - name: phoneId
+          in: path
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Update an existent phone in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneNumber'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Invalid phone id
+
+    delete:
+      tags:
+        - phone-number
+      summary: delete phone by phone id
+      parameters:
+        - name: phoneId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/PhoneNumber'
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Invalid customer id
+
+  /phoneNumbers/customer/{customerId}:
+    delete:
+      tags:
+        - phone-number
+      summary: delete phone by customer id
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/PhoneNumber'
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Invalid customer id
+
+  /phoneNumber:
+    post:
+      tags:
+        - phone-number
+      summary: Add a new Phone to the store
+      description: Add a new Phone to the store
+      operationId: addPhone
+      requestBody:
+        description: Create a new Phone in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneNumber'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumber'
+        '405':
+          description: Invalid input
+
+  /zips:
+    get:
+      tags:
+        - zip-code
+      summary: Get all ZipCodes
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ZipCodes'
+  /zips/{id}:
+    get:
+      tags:
+        - zip-code
+      summary: Find ZipCode by ZipCode id
+      description: Provide the ZipCode id in the path variable
+      operationId: findZipCodeByZipCodeId
+      parameters:
+        - name: id
+          in: path
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            $ref: '#/components/schemas/ZipCodes'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZipCodes'
+        '404':
+          description: Invalid ZipCode id
+
+    put:
+      tags:
+        - zip-code
+      summary: Update existing ZipCode by ZipCode id
+      parameters:
+        - name: id
+          in: path
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Update an existent ZipCode in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZipCodes'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Invalid ZipCode id
+
+    delete:
+      tags:
+        - zip-code
+      summary: delete ZipCode by ZipCode id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ZipCodes'
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Invalid ZipCode id
+
+  /zip:
+    post:
+      tags:
+        - zip-code
+      summary: Add a new ZipCode to the store
+      description: Add a new ZipCode to the store
+      operationId: addZipCode
+      requestBody:
+        description: Create a new ZipCode in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZipCodes'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZipCodes'
+        '405':
+          description: Invalid input
+
+
+
+
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        cusomerId:
+          type: integer
+          format: int64
+          example: 100000
+        firstName:
+          type: string
+          example: fehguy
+        lastName:
+          type: string
+          example: fehguy
+        userName:
+          type: string
+          example: fehguy
+        age:
+          type: integer
+        gender:
+          type: string
+        organizationName:
+          type: string
+        industry:
+          type: string
+
+    Address:
+      type: object
+      properties:
+        customerAddressId:
+          type: integer
+        customerId:
+          type: integer
+        addressLine1:
+          type: string
+          example: 437 Lytton
+        addressLine2:
+          type: string
+          example: Palo Alto
+        addressLine3:
+          type: string
+          example: Palo Alto
+        addressType:
+          type: string
+          example: CA
+        zip:
+          type: string
+          example: '94301'
+    PhoneNumber:
+      type: object
+      properties:
+        phoneId:
+          type: integer
+          format: int64
+          example: 1
+        customerId:
+          type: integer
+        areaCode:
+          type: integer
+        LocalNumber:
+          type: integer
+
+    ZipCodes:
+      type: object
+      properties:
+        zipCodeId:
+          type: integer
+          format: int64
+          example: 1
+        city:
+          type: string
+          example: New Delhi
+        stateCode:
+          type: integer
+        zipCode:
+          type: integer
+        zipCodeExt:
+          type: integer
